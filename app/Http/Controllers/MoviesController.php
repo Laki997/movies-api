@@ -6,17 +6,37 @@ use App\Http\Requests\MovieRequest;
 use Illuminate\Http\Request;
 use App\Models\Movie;
 use Carbon\Carbon;
+use App\Http\Services\MovieService;
+
+
 
 class MoviesController extends Controller
 {
+    public function __construct(MovieService $movieService){
+        $this->movieService = $movieService;
+     
+    }
+    
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Movie::all();
+        // bez servisa
+
+        // if ($request->input('title')){
+
+        //     $filter = $request->input('title');
+        //     $movies = Movie::where('title',$filter)->get();
+        //     return $movies;
+        // } else {
+        //     return Movie::all();
+        // }
+
+        // sa servisom
+        return  $this->movieService->search($request);
 
         
     }
