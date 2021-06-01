@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\MovieRequest;
 use Illuminate\Http\Request;
 use App\Models\Movie;
 use Carbon\Carbon;
@@ -37,20 +38,12 @@ class MoviesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(MovieRequest $request)
     {
-        
-      $movie = new Movie();
-      $movie->title = $request->input('title');
-      $movie->director = $request->input('director');
-      $movie->imageUrl = $request->input('imageUrl');
-      $movie->duration = $request->input('duration');
-      $movie->releaseDate = Carbon::now();
-      $movie->genre = $request->input('genre');
+        info($request);
+      $data = $request->validated(); 
       
-      $movie->save();
-
-      return $movie;
+      return Movie::create($data);
     }
 
     /**
@@ -84,9 +77,13 @@ class MoviesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(MovieRequest $request, $id)
     {
-        return Movie::where('id',$id)->update($request->all());
+        info($request);
+        $data = $request->validated();
+        
+        
+        return Movie::where('id',$id)->update($data);
     }
 
     /**
